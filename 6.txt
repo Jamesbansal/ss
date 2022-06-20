@@ -1,0 +1,94 @@
+
+6. a) Program to recognize a valid arithmetic expression that uses operates +,-,*,/
+6a.l
+%{
+#include "y.tab.h"
+%}
+%%
+[0-9]+(\.[0-9]+)? {return NUM;}
+[a-zA-Z][_a-zA-Z0-9]* {return ID;}
+[\t] ;
+\n {return 0;}
+. {return yytext[0];}
+%%
+int yywrap() { }
+6a.y
+%{
+#include<stdio.h>
+%}
+%token L D NL
+%%
+var: L E NL {printf("Valid Variable\n");return 0;}
+E: E L
+| E D
+| ;
+%%
+int yyerror()
+{
+printf("\n Invalid Variable\n");
+16
+return 0;
+}
+int main()
+{
+printf("\nEnter a variable\n");
+yyparse();
+}
+Command for execution: 
+lex pgm_name.l
+OR
+Flex pgm.l
+Yacc -y -d pgm_name.y
+OR
+Bison -y -d pgm_name.y
+gcc lex.yy.c y.tab.c -o pgm_name.exe
+pgm_name.exe
+
+
+
+
+
+
+b) Program to recognize a valid variable, which starts with a letter, followed by any number of letters or digits
+6b.l
+%{
+#include "y.tab.h"
+%}
+%%
+[a-z] return L;
+[0-9] return D;
+\n {return NL;}
+18
+%%
+int yywrap() { }
+6b.y
+%{
+#include<stdio.h>
+%}
+%token L D NL
+%%
+var: L E NL {printf("Valid Variable\n");return 0;}
+E: E L
+| E D
+| ;
+%%
+int yyerror()
+{
+printf("\n Invalid Variable\n");
+return 0;
+}
+int main()
+{
+printf("\nEnter a variable\n");
+yyparse();
+}
+Command for execution: 
+lex pgm_name.l
+19
+OR
+Flex pgm.l
+Yacc -y -d pgm_name.y
+OR
+Bison -y -d pgm_name.y
+gcc lex.yy.c y.tab.c -o pgm_name.exe
+pgm_name.exe
