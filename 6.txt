@@ -1,50 +1,54 @@
-
-6. a) Program to recognize a valid arithmetic expression that uses operates +,-,*,/
-6a.l
+6. A) Program to recognize a valid arithmetic expression that uses operates +,-,*,/
+Program: lab6a.l
+Code:
 %{
-#include "y.tab.h"
+#include”y.tab.h”
 %}
 %%
-[0-9]+(\.[0-9]+)? {return NUM;}
+[0-9]+(\•[0-9]+)? {return NUM;}
 [a-zA-Z][_a-zA-Z0-9]* {return ID;}
 [\t] ;
-\n {return 0;}
-. {return yytext[0];}
+\nreturn 0;
+• return yytext[0];
 %%
-int yywrap() { }
-6a.y
+Program: lab6a.y
+Code:
 %{
 #include<stdio.h>
 %}
-%token L D NL
+%token NUM ID
+%left ‘+’’-‘
+%left’*’’/’
 %%
-var: L E NL {printf("Valid Variable\n");return 0;}
-E: E L
-| E D
-| ;
+e:e’+’e
+| e’-‘e
+| e’*’e
+| e’/’e
+| ‘(‘e’)’
+| NUM
+I ID ;
 %%
-int yyerror()
+main()
 {
-printf("\n Invalid Variable\n");
-16
-return 0;
-}
-int main()
-{
-printf("\nEnter a variable\n");
+printf(“\nType the expression to be tested\n”);
 yyparse();
+printf(“\nValid expression\n”);
 }
-Command for execution: 
-lex pgm_name.l
-OR
-Flex pgm.l
-Yacc -y -d pgm_name.y
-OR
-Bison -y -d pgm_name.y
-gcc lex.yy.c y.tab.c -o pgm_name.exe
-pgm_name.exe
-
-
+yyerror()
+{
+printf(“\n Invalid expression! \n”);
+exit(0);
+}
+How to run above program
+$ lex lab6a.l
+$ yacc –d lab6a.y // => Generates y.tab.h file
+$ cc lex.yy.c –ll // => -ll links with lex library
+$ ./a.out
+Input & Output:
+Enter an arithmetic expression
+a1+b2-9/8
+^d
+valid expression
 
 
 
